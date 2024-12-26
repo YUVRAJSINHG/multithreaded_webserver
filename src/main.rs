@@ -6,7 +6,6 @@ use std::{
     thread,
     time::Duration,
 };
-//this is a commet for the sack of the comment
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
