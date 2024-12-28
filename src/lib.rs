@@ -1,17 +1,19 @@
 use std::{ 
-    sync::{ Arc, Mutex, mpsc,},
+    sync::{ Arc, Mutex, mpsc},
     thread,
 };
+
+pub struct ThreadPool {
+    workers: Vec<Worker>,
+    sender: Option<mpsc::Sender<Job>>,
+}
+
+type Job = Box<dyn FnOnce() + Send + 'static>;
 
 struct Worker {
     id: usize, 
     thread: Option<thread::JoinHandle<()>>,
 }
-pub struct ThreadPool {
-    workers: Vec<Worker>,
-    sender: Option<mpsc::Sender<Job>>,
-}
-type Job = Box<dyn FnOnce() + Send + 'static>;
 
 impl ThreadPool {
     pub fn new(size: usize) -> ThreadPool {
